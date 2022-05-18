@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using System.Linq;
 using Todo.Data.Entities;
 using Todo.EntityModelMappers.TodoLists;
+using Todo.Tests.Builders;
 using Xunit;
 
 namespace Todo.Tests.EntityModelMappers.TodoLists.Details
@@ -16,12 +17,13 @@ namespace Todo.Tests.EntityModelMappers.TodoLists.Details
         {
             srcTodoList = new TodoList(srcIdentityUser, "Personal");
 
-            srcTodoList.Items.Add(new TodoItem(2, srcIdentityUser, "m1", Importance.Medium));
-            srcTodoList.Items.Add(new TodoItem(4, srcIdentityUser, "l1", Importance.Low));
-            srcTodoList.Items.Add(new TodoItem(8, srcIdentityUser, "h1", Importance.High));
-            srcTodoList.Items.Add(new TodoItem(42, srcIdentityUser, "m2", Importance.Medium));
-            srcTodoList.Items.Add(new TodoItem(46, srcIdentityUser, "h2", Importance.High));
-            srcTodoList.Items.Add(new TodoItem(44, srcIdentityUser, "l2", Importance.Low));
+            srcTodoList = new TestTodoListBuilder(srcIdentityUser, "Personal")
+                .WithItem("m1", Importance.Medium)
+                .WithItem("l1", Importance.Low)
+                .WithItem("m2", Importance.Medium)
+                .WithItem("h2", Importance.High)
+                .WithItem("l2", Importance.Low)
+                .Build();
         }
 
         [Fact]

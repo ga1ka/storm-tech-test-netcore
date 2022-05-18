@@ -11,12 +11,15 @@ namespace Todo.Models.TodoLists
 
         public bool NotDoneOnlyMode { get; }
 
-        public TodoListDetailViewmodel(int todoListId, string title, ICollection<TodoItemSummaryViewmodel> items, bool notDoneOnlyMode)
+        public bool OrderByRankMode { get; }
+
+        public TodoListDetailViewmodel(int todoListId, string title, ICollection<TodoItemSummaryViewmodel> items, bool notDoneOnlyMode, bool orderByRankMode)
         {
             Items = items;
             TodoListId = todoListId;
             Title = title;
             NotDoneOnlyMode = notDoneOnlyMode;
+            OrderByRankMode = orderByRankMode;
         }
     }
 }

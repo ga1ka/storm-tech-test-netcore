@@ -12,7 +12,7 @@ namespace Todo.Tests.Builders
     {
         private readonly string title;
         private readonly IdentityUser owner;
-        private readonly List<(string Titile, Importance Importance, IdentityUser ResponsibleParty)> items = new();
+        private readonly List<(string Titile, Importance Importance, int Rank, IdentityUser ResponsibleParty)> items = new();
 
         public TestTodoListBuilder(IdentityUser owner, string title)
         {
@@ -20,21 +20,23 @@ namespace Todo.Tests.Builders
             this.owner = owner;
         }
 
-        public TestTodoListBuilder WithItem(string itemTitle, Importance importance) => WithItem(itemTitle, importance, owner);
+        public TestTodoListBuilder WithItem(string itemTitle, Importance importance) => WithItem(itemTitle, importance, 0, owner);
+
+        public TestTodoListBuilder WithItem(string itemTitle, Importance importance, int rank) => WithItem(itemTitle, importance, rank, owner);
 
         public TestTodoListBuilder WithItem(string itemTitle, Importance importance, string responsiblePartyId)
-            => WithItem(itemTitle, importance, new IdentityUser { Id = responsiblePartyId });
+            => WithItem(itemTitle, importance, 0, new IdentityUser { Id = responsiblePartyId });
 
-        public TestTodoListBuilder WithItem(string itemTitle, Importance importance, IdentityUser responsibleParty)
+        public TestTodoListBuilder WithItem(string itemTitle, Importance importance, int rank, IdentityUser responsibleParty)
         {
-            items.Add((itemTitle, importance, responsibleParty));
+            items.Add((itemTitle, importance, rank, responsibleParty));
             return this;
         }
 
         public TodoList Build()
         {
             var todoList = new TodoList(owner, title);
-            var todoItems = items.Select(itm => new TodoItem(todoList.TodoListId, itm.ResponsibleParty, itm.Titile, itm.Importance));
+            var todoItems = items.Select(itm => new TodoItem(todoList.TodoListId, itm.ResponsibleParty, itm.Titile, itm.Importance) { Rank = itm.Rank });
             todoItems.ToList().ForEach(tlItm =>
             {
                 todoList.Items.Add(tlItm);

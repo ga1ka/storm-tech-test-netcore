@@ -20,7 +20,7 @@
         @if (Model.NotDoneOnlyMode)
         {
             <li class="nav-item">
-                <a class="nav-link" asp-action="Detail" asp-controller="TodoList" asp-route-todoListId="@Model.TodoListId" asp-route-notDoneOnly="false">
+                <a class="nav-link" asp-action="Detail" asp-controller="TodoList" asp-route-todoListId="@Model.TodoListId" asp-route-notDoneOnly="false" asp-route-orderByRank="@Model.OrderByRankMode">
                     Show all items
                 </a>
             </li>
@@ -29,8 +29,26 @@
         else
         {
             <li class="nav-item">
-                <a class="nav-link" asp-action="Detail" asp-controller="TodoList" asp-route-todoListId="@Model.TodoListId" asp-route-notDoneOnly="true">
+                <a class="nav-link" asp-action="Detail" asp-controller="TodoList" asp-route-todoListId="@Model.TodoListId" asp-route-notDoneOnly="true" asp-route-orderByRank="@Model.OrderByRankMode">
                     Hide items marked as done
+                </a>
+            </li>
+
+        }
+        @if (Model.OrderByRankMode)
+        {
+            <li class="nav-item">
+                <a class="nav-link" asp-action="Detail" asp-controller="TodoList" asp-route-todoListId="@Model.TodoListId" asp-route-notDoneOnly="@Model.NotDoneOnlyMode" asp-route-orderByRank="false">
+                    Order by importance
+                </a>
+            </li>
+
+        }
+        else
+        {
+            <li class="nav-item">
+                <a class="nav-link" asp-action="Detail" asp-controller="TodoList" asp-route-todoListId="@Model.TodoListId" asp-route-notDoneOnly="@Model.NotDoneOnlyMode" asp-route-orderByRank="true">
+                    Order by rank
                 </a>
             </li>
 
@@ -87,8 +105,22 @@
         }
     </ul>
 </div>
+<summary>
+    @if (Model.NotDoneOnlyMode)
+    {
+        <p>Displaying only not done items</p>
+    }
+    else
+    {
+        <p>Displaying all items including done</p>
+    }
+    @if (Model.OrderByRankMode)
+    {
+        <p>Sorting items by rank</p>
+    }
+    else
+    {
+        <p>Sorting items by importance</p>
+    }
+</summary>
 
-@if (Model.NotDoneOnlyMode)
-{
-    <summary>Displaying only not done items</summary>
-}

@@ -13,6 +13,8 @@ namespace Todo.Data.Entities {
         public int TodoListId { get; set; }
         public TodoList TodoList { get; set; }
 
+        public int Rank { get; set; }
+
         protected TodoItem() { }
 
         public TodoItem(int todoListId, string responsiblePartyId, string title, Importance importance)

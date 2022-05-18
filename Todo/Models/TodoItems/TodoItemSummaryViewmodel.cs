@@ -10,13 +10,16 @@ namespace Todo.Models.TodoItems
         public bool IsDone { get; }
         public Importance Importance { get; }
 
-        public TodoItemSummaryViewmodel(int todoItemId, string title, bool isDone, UserSummaryViewmodel responsibleParty, Importance importance)
+        public int Rank { get; }
+
+        public TodoItemSummaryViewmodel(int todoItemId, string title, bool isDone, UserSummaryViewmodel responsibleParty, Importance importance, int rank)
         {
             TodoItemId = todoItemId;
             Title = title;
             IsDone = isDone;
             ResponsibleParty = responsibleParty;
             Importance = importance;
+            Rank = rank;
         }
     }
 }

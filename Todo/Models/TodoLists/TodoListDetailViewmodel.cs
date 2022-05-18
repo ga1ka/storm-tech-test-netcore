@@ -9,11 +9,14 @@ namespace Todo.Models.TodoLists
         public string Title { get; }
         public ICollection<TodoItemSummaryViewmodel> Items { get; }
 
-        public TodoListDetailViewmodel(int todoListId, string title, ICollection<TodoItemSummaryViewmodel> items)
+        public bool NotDoneOnlyMode { get; }
+
+        public TodoListDetailViewmodel(int todoListId, string title, ICollection<TodoItemSummaryViewmodel> items, bool notDoneOnlyMode)
         {
             Items = items;
             TodoListId = todoListId;
             Title = title;
+            NotDoneOnlyMode = notDoneOnlyMode;
         }
     }
 }

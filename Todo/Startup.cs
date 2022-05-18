@@ -8,6 +8,12 @@ using Todo.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Todo.Services;
+using System;
+using Polly.Extensions.Http;
+using Polly;
+using System.Net.Http;
+using Polly.Timeout;
 
 namespace Todo
 {
@@ -45,6 +51,9 @@ namespace Todo
                     .RequireAuthenticatedUser()
                     .Build();
             });
+
+            AddGravatar(services);
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -74,6 +83,24 @@ namespace Todo
                 endpoints.MapDefaultControllerRoute();
                 endpoints.MapRazorPages();
             });
+        }
+
+        private void AddGravatar(IServiceCollection services)
+        {
+            var retryPolicy = HttpPolicyExtensions
+              .HandleTransientHttpError()
+              .Or<TimeoutRejectedException>() // thrown by Polly's TimeoutPolicy if the inner execution times out
+              .RetryAsync(3);
+
+            var timeoutPolicy = Policy.TimeoutAsync<HttpResponseMessage>(10);
+
+            services.AddHttpClient<GravatarApiClient>(x =>
+            {
+                x.BaseAddress = new Uri("https://gravatar.com/");
+                x.DefaultRequestHeaders.UserAgent.ParseAdd("ga1ka-storm-tech-test");
+            }).SetHandlerLifetime(TimeSpan.FromMinutes(2))
+             .AddPolicyHandler(retryPolicy)
+            .AddPolicyHandler(timeoutPolicy);
         }
     }
 }

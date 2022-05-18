@@ -3,6 +3,7 @@
 
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
+@inject GravatarApiClient GravatarApiClient
 
 @if (SignInManager.IsSignedIn(User))
 {
@@ -15,11 +16,12 @@
 
                         var iu = await UserManager.GetUserAsync(User);
                         var emailAddress = await UserManager.GetEmailAsync(iu);
-                        var gravatarhash = Gravatar.GetHash(emailAddress);
+                        
+                        var gravatarResult = await GravatarApiClient.GetProfile(emailAddress, UserManager.GetUserName(User));
                     }
 
-                    <img src="https://www.gravatar.com/avatar/@gravatarhash?s=30" />
-                    @UserManager.GetUserName(User)
+                    <img src="@gravatarResult.ThumbnailUrl?s=30" />
+                    @gravatarResult.DisplayName
                 </a>
             </li>
             <li>

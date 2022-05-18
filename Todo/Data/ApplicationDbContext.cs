@@ -6,13 +6,17 @@ namespace Todo.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
+        public ApplicationDbContext() //TODO for tests only, do it better
+        {
+
+        }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
         }
 
-        
-        public DbSet<TodoList> TodoLists { get; set; }
+
+        public virtual DbSet<TodoList> TodoLists { get; set; }
         public DbSet<TodoItem> TodoItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -1,9 +1,5 @@
 ﻿using FluentAssertions;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Todo.Data;
 using Todo.Data.Entities;
 using Todo.Services;
@@ -19,24 +15,23 @@ namespace Todo.Tests.Services.Data
 
         public WhenSingleTodoListIsLoaded()
         {
-            dbContext = new InMemoryApplicationDbContextBuilder().Build();
-
             var user = new Microsoft.AspNetCore.Identity.IdentityUser { Id = "42", UserName = "arthur.dent", Email = "arthur.dent@galaxy.com" };
-            dbContext.Users.Add(user);
 
-
-            dbContext.TodoLists.Add(new TodoList(user, "list 1") { TodoListId = todoListId,
-                Items = new[] {
+            dbContext = new MockedApplicationDbContextBuilder()
+                .WithList(new TodoList(user, "list 1")
+                {
+                    TodoListId = todoListId,
+                    Items = new[] {
                     new TodoItem(todoListId, user, "i1", Importance.High) { IsDone = false },
                     new TodoItem(todoListId, user, "i2", Importance.Low) { IsDone = true },
                     new TodoItem(todoListId, user, "i3", Importance.Medium) { IsDone = false }
                 }
-            });
+                })
+                .Build();
 
-            dbContext.SaveChanges();
         }
 
-        [Fact(Skip = "EF Include where seems to be not working with sqllite in-memory provider")]
+        [Fact]
         public void WithoutNotDoneOnlyFlag()
         {
             var result = dbContext.SingleTodoList(todoListId);
@@ -47,7 +42,7 @@ namespace Todo.Tests.Services.Data
             result.Items.Any(x => x.IsDone).Should().BeTrue();
         }
 
-        [Fact(Skip = "EF Include where seems to be not working with sqllite in-memory provider")]
+        [Fact(Skip = "Require more mocking for IIncludableQueryable<>")]
         public void WithNotDoneOnlyFlag()
         {
             var result = dbContext.SingleTodoList(todoListId, true);

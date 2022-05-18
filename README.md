@@ -17,6 +17,7 @@ The app runs on Windows, macOS, and Linux. It can be built using Visual Studio 2
 | build | `dotnet build` |
 | run unit tests | `dotnet test Todo.Tests` |
 | run | `dotnet run --project Todo` |
+| update database | `dotnet ef database update --project Todo` |
 
 If you run the tests, you should see that one fails. This is deliberate.
 
@@ -35,7 +36,7 @@ If you want to document any aspects of your solution, please use `SOLUTION.md` i
 
 | # | Description |
 |-|-|
-| 1 | Build and run the app. Register a user account, make some lists, add some items – have a play and get familiar with the app. |
+| 1 | Build and run the app. Appliing EF migrations will be required. Register a user account, make some lists, add some items – have a play and get familiar with the app. |
 | 2 | When todo items are displayed in browser in the details page, they are listed in an arbitrary order. Change `Views/TodoList/Detail.cshtml` so that items are listed by order of importance: `High`, `Medium`, `Low` |
 | 3 | Run the unit tests. One test should be failing. The process that maps a `TodoItem` to a `TodoItemEditFields` instance is failing - the `Importance` field is not copied. Fix the bug and ensure the test passes. |
 | 4 | Make it so that the edit and create item pages show friendly text instead of "ResponsiblePartyId"  |
